@@ -3,9 +3,9 @@ import React from 'react'
 function Weather({city,temp, wth}) {
   return (
     <div>
-        <p>{city}</p>
-          <p>{temp}ºC</p>
-          <p>{wth}</p>
+        <p className='city'>{city}</p>
+          <p className='temp'>{temp}ºC</p>
+          <p className='wth'>{wth}</p>
     
     </div>
   )

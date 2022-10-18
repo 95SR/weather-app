@@ -1,11 +1,13 @@
 import axios from 'axios';
-import { useState} from 'react';
+import { useState,useRef} from 'react';
 import './App.css';
 import Weather from './Weather';
+import bg from '../src/img/bg.jpg'
 
 function App() {
   const [place,setPlace] = useState("Seoul");
   const [result, setResult] = useState({});
+  const rslt = useRef();
 
   const url = `https://api.openweathermap.org/data/2.5/weather?q=${place}&appid=5c1418d2691f1c0b65a2911bef502740&units=metric`
 
@@ -24,35 +26,52 @@ function App() {
     }
   }
 
+  const handleButtonClick = () => {
+    rslt.current.style.animation = "0.7s ease-in-out 0s 1 show";
+}
+
+const handleAnimationEnd = () => {
+  rslt.current.style.animation = "none";
+}
+
   
 
-  const city='ssi'
-  const temp= 20
-  const wth = 'hot'
+ 
   
 
   return (
-    <div className="App">
-      <h1>React Weather App</h1>
-      <main>
+    <div className="App" style={{ backgroundImage:`url(${bg})` }}>
+      <div className='container'>
+        <h1>React Weather App</h1>
+        <main>
+          <div className='form'>
+              <input type='text' value={place} onChange={(e) => setPlace(e.target.value) } />
+              <button  onClick={() => { getWeatherData(); handleButtonClick();}}>Search</button>
+          </div>
         
-        <input type='text' value={place} onChange={(e) => setPlace(e.target.value) }/>
-        <button onClick={getWeatherData}>Search</button>
         {Object.keys(result).length !== 0 && (
 
-          <Weather city={result.data.name} temp={result.data.main.temp} wth={result.data.weather[0].main}/>
+          <div className='result' ref={rslt} onAnimationEnd={handleAnimationEnd}>
+            <Weather  city={result.data.name} temp={result.data.main.temp} wth={result.data.weather[0].main}/>
+
+          </div>
+
+          
           
           
 
         )}
 
-        
+          
 
-    
-      </main>
+      
+        </main>
+        
+      </div>
       <footer>
-        Page created by Syahri
-      </footer>
+          Page created by Syahri
+        </footer>
+      
     </div>
   );
 }
